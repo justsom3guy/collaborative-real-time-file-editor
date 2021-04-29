@@ -16,6 +16,8 @@ const ToolBarOptions = [
   ["clean"],
 ];
 
+const INTERVAL_PERIOD = 2000;
+
 const Editor = () => {
   const { id: documentId } = useParams();
   const [socket, setSocket] = useState();
@@ -86,6 +88,18 @@ const Editor = () => {
 
     return () => {
       socket.off("receive-changes", handler);
+    };
+  }, [quil, socket]);
+
+  useEffect(() => {
+    if (socket == null || quil == null) return;
+
+    const interval = setInterval(() => {
+      socket.emit("save-document", quil.getContents());
+    }, INTERVAL_PERIOD);
+
+    return () => {
+      clearInterval(interval);
     };
   }, [quil, socket]);
 
