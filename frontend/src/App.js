@@ -1,5 +1,7 @@
+import Editor from "./editor";
+
 function App() {
-  return <div className="App">Hello</div>;
+  return <Editor />;
 }
 
 export default App;
